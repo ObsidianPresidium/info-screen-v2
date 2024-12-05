@@ -1,0 +1,18 @@
+[Unit]
+Description=Info Screen for Raspberry Pi
+After=network.target
+
+[Service]
+WorkingDirectory=INFO_SCREEN_CURRENT_DIRECTORY
+Type=simple
+
+User=INFO_SCREEN_CURRENT_USER
+Group=INFO_SCREEN_CURRENT_USER
+
+ExecStart=/bin/bash INFO_SCREEN_START_SCRIPT
+
+Restart=on-failure
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target
