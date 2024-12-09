@@ -1,13 +1,24 @@
 <style lang="scss">
     @import "@fontsource/cantarell/700";
+    @import "@fontsource/inter";
     .time {
+        --font: "Inter";
         font-size: 10rem;
         color: white;
-        font-family: "Cantarell";
-        margin: 2rem;
+        font-family: var(--font);
+        margin: 0 2rem;
+        &:first-child {
+            margin-top: 2rem;
+        }
+        &:last-child {
+            margin-bottom: 2rem;
+        }
     }
     .container {
-        display: inline-block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
         align-self: flex-start;
     }
 
@@ -18,20 +29,54 @@
 </style>
 
 <script lang="ts">
-    let { debug = false } = $props();
+    let { debug = false, style = "vertical", font = "Inter", forceAmPm = false } = $props();
 
     function timeString() {
         return new Date().toLocaleTimeString([], { timeStyle: "short" });
     }
 
-    let time = $state(timeString());
+    function timeObj() {
+        let date = new Date();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let hourCycle = new Intl.Locale(navigator.language).hourCycle;
+        let needsAmPm = hourCycle === "h11" || hourCycle === "h12" || forceAmPm;
+        let isPm = date.getHours() > 12;
+
+        return {
+            hours,
+            minutes,
+            needsAmPm,
+            isPm
+        }
+    }
+
+    let timeHorizontal = $state(timeString());
+    let timeVertical = $state(timeObj());
     setInterval(() => {
-        time = timeString();
+        timeHorizontal = timeString();
+        timeVertical = timeObj();
     }, 1000);
 </script>
 
-<div class:debug={debug} class="container">
-    <p class="time">
-        {time}
-    </p>
-</div>
+{#if style === "vertical"}
+    <div class:debug class="container">
+        <p class="time">
+            {timeVertical.hours}
+        </p>
+        <p class="time">
+            {timeVertical.minutes}
+        </p>
+        {#if timeVertical.needsAmPm}
+            <p class="time">
+                {(timeVertical.isPm) ? "PM" : "AM"}
+            </p>
+        {/if}
+    </div>
+{:else}
+    <div class:debug={debug} class="container">
+        <p style="--font: {font}" class="time">
+            {timeHorizontal}
+        </p>
+    </div>
+{/if}

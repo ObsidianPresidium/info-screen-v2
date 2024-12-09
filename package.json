@@ -29,6 +29,7 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
-		"@fontsource/cantarell": "^5.1.0"
+		"@fontsource/cantarell": "^5.1.0",
+		"@fontsource/inter": "^5.1.0"
 	}
 }
