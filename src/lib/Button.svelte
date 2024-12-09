@@ -18,21 +18,33 @@
             background-image: var(--gradient-default);
             background-size: 400% 100%;
             background-position-x: 0%;
-            transition: background-position-x 300ms cubic-bezier(0,0,0,1); 
+            transition: background-position-x 300ms cubic-bezier(0,0,0,1), transform 300ms ease-out;
+            cursor: none;
         }
 
         &:active {
             background-position-x: 100%;
+            transform: scale(0.98);
         }
+    }
+
+    button {
+        display: none;
     }
 </style>
 
 <script lang="ts">
-    let { text, href = "#", gradient = true } = $props();
+    let { text, href = "#", gradient = true, showCursor = false, submit = false } = $props();
+    let submitButton : HTMLButtonElement;
 
     if (gradient === true) {
         // some logic
     }
-</script>
 
-<a class="btn" href="{href}">{text}</a>
+    const submitForm = () => {
+        if (submit) submitButton.click();
+    }
+</script>
+<button bind:this={submitButton} type="submit">{text}</button>
+
+<a style="cursor: {(showCursor) ? 'default':'none'}" class="btn" href="{href}" on:click={submitForm}>{text}</a>

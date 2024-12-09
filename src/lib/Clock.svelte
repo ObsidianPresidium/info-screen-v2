@@ -29,8 +29,9 @@
 </style>
 
 <script lang="ts">
+    import { onMount } from "svelte";
     let { debug = false, style = "vertical", font = "Inter", forceAmPm = false } = $props();
-
+    
     function timeString() {
         return new Date().toLocaleTimeString([], { timeStyle: "short" });
     }
@@ -39,8 +40,7 @@
         let date = new Date();
         let hours = date.getHours();
         let minutes = date.getMinutes();
-        let hourCycle = new Intl.Locale(navigator.language).hourCycle;
-        let needsAmPm = hourCycle === "h11" || hourCycle === "h12" || forceAmPm;
+        let needsAmPm = false || forceAmPm;
         let isPm = date.getHours() > 12;
 
         return {
@@ -53,10 +53,32 @@
 
     let timeHorizontal = $state(timeString());
     let timeVertical = $state(timeObj());
-    setInterval(() => {
-        timeHorizontal = timeString();
-        timeVertical = timeObj();
-    }, 1000);
+
+    onMount(() => {
+        
+
+        function timeObj() {
+            let date = new Date();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let hourCycle = new Intl.Locale(window.navigator.language).hourCycle;
+            let needsAmPm = hourCycle === "h11" || hourCycle === "h12" || forceAmPm;
+            let isPm = date.getHours() > 12;
+
+            return {
+                hours,
+                minutes,
+                needsAmPm,
+                isPm
+            }
+        }
+        
+        setInterval(() => {
+            timeHorizontal = timeString();
+            timeVertical = timeObj();
+        }, 1000);
+    });
+    
 </script>
 
 {#if style === "vertical"}

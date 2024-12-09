@@ -17,16 +17,18 @@
     .panel {
         width: 100%;
         height: 10rem;
-        position: relative;
         @include transparent-gradient-background(var(--gradient-8), 0.33);
         display: flex;
         align-items: center;
     }
     .testelement {
-        @include set-flex-size-and-margin(25rem, 100%, 2rem);
+        // @include set-flex-size-and-margin(25rem, 100%, 2rem);
+        margin: 0 2rem;
         display: block;
-        position: relative;
         @include transparent-gradient-background(var(--gradient-8), 0.33);
+    }
+    .desktop-items {
+        display: flex;
     }
 </style>
 
@@ -40,8 +42,13 @@
 <div class="foreground">
     <div class="desktop">
         <Clock />
-        <div class="testelement">
+        <div class="desktop-items">
+            <div class="testelement">
 
+            </div>
+            <div class="testelement">
+
+            </div>
         </div>
     </div>
     <div class="panel">
