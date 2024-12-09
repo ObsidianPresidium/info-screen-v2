@@ -1,4 +1,5 @@
 @mixin transparent-gradient-background($gradient, $opacity) {
+    position: relative;
     &:before {
         content: "";
         display: block;
