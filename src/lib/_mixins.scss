@@ -1,4 +1,4 @@
-@mixin transparent-gradient-background($gradient, $opacity, $z-index: 0) {
+@mixin transparent-gradient-background($gradient, $opacity, $z-index: auto) {
     position: relative;
     z-index: $z-index;
     &:before {
