@@ -16,9 +16,6 @@
         font-size: 7rem;
         color: white;
     }
-    button {
-        display: none;
-    }
     .radio-div {
         display: flex;
         align-items: center;
@@ -89,20 +86,21 @@
 <script lang="ts">
     import Button from "$lib/Button.svelte";
     import { onMount } from "svelte";
-    let useCursorsCheckboxChecked = false;
-    let submitButton: HTMLButtonElement;
+    let { userLikesCursorsBool } = $props();
+    let useCursorsCheckboxChecked = $state(userLikesCursorsBool);
+    let form : HTMLFormElement;
+    let formSubmitFunction: () => void;
 
     onMount(() => {
-        function submit() {
-            submitButton.click();
+        formSubmitFunction = () => {
+            form.submit();
         }
     });
-    
 </script>
 
 <main>
     <h1>Apply customizations</h1>
-    <form method="post">
+    <form method="POST" bind:this={form}>
         <div>
             <div class="radio-div">
                 <input type="radio" name="size" id="size-800x480" value="800x480"><label for="size-800x480">800x480</label>
@@ -118,7 +116,6 @@
             </label>
             <p>Display cursor (enable this if not using touchscreen)</p>
         </div>
-        <Button href="" text="Start info-screen-v2" showCursor />
-        <button type="submit" bind:this={submitButton}>Start info-screen-v2</button>
+        <Button text="Start info-screen-v2" isButtonElement/>
     </form>
 </main>

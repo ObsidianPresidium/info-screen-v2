@@ -1,7 +1,11 @@
-import { redirect } from '@sveltejs/kit';
+import { redirect } from "@sveltejs/kit";
+import type { Actions } from "./$types";
 
 export function load({ cookies }) {
     const userLikesCursors = cookies.get("useCursors");
+    const userLikesCursorsBool = userLikesCursors === "true";
+
+    return { userLikesCursorsBool };
 }
 
 export const actions = {
@@ -10,15 +14,14 @@ export const actions = {
         const size = formData.get("size");
         const useCursors = formData.get("use-cursors");
 
-        if (useCursors) {
-            cookies.set(
-                "useCursors", "true",
-                {
-                    path: '/',
-                    maxAge: 60 * 60 * 24 * 365
-                }
-            );
-            redirect(302, `/${size}/`);
-        }
+        cookies.set(
+            "useCursors", `${useCursors === "on"}`,
+            {
+                path: '/',
+                maxAge: 60 * 60 * 24 * 365
+            }
+        );
+
+        redirect(302, `/${size}/`);
     }
-}
+} satisfies Actions;

@@ -30,16 +30,33 @@
     .desktop-items {
         display: flex;
     }
+
+    .foreground--no-cursor :global {
+        cursor: none !important;
+    }
+
+    .foreground--no-cursor :global:hover {
+        cursor: none !important;
+    }
+    
 </style>
 
 <script lang="ts">
+    import { onMount } from "svelte";
     import Background from "$lib/Background.svelte";
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
+    
+    let { data } = $props();
+    let foreground: HTMLDivElement;
+    
+    onMount(() => {
+        console.log(data);
+    });
 </script>
 
-<Background />
-<div class="foreground">
+<Background useCursors={data.useCursors} />
+<div class="foreground" class:foreground--no-cursor={!data.useCursors}>
     <div class="desktop">
         <Clock />
         <div class="desktop-items">
@@ -52,6 +69,6 @@
         </div>
     </div>
     <div class="panel">
-        <Button text="Test button" />
+        <Button href="#" text="Test button" />
     </div>
 </div>
