@@ -20,6 +20,7 @@
         align-items: center;
 
         align-self: flex-start;
+        min-width: 10rem * 2;
     }
 
     .debug {
@@ -40,12 +41,13 @@
         let date = new Date();
         let hours = date.getHours();
         let minutes = date.getMinutes();
+        let minutesLeadingZero = minutes < 10 ? "0" + minutes.toString() : minutes.toString();
         let needsAmPm = false || forceAmPm;
         let isPm = date.getHours() > 12;
 
         return {
             hours,
-            minutes,
+            minutesLeadingZero,
             needsAmPm,
             isPm
         }
@@ -61,13 +63,14 @@
             let date = new Date();
             let hours = date.getHours();
             let minutes = date.getMinutes();
+            let minutesLeadingZero = minutes < 10 ? "0" + minutes.toString() : minutes.toString();
             let hourCycle = new Intl.Locale(window.navigator.language).hourCycle;
             let needsAmPm = hourCycle === "h11" || hourCycle === "h12" || forceAmPm;
             let isPm = date.getHours() > 12;
 
             return {
                 hours,
-                minutes,
+                minutesLeadingZero,
                 needsAmPm,
                 isPm
             }
@@ -87,7 +90,7 @@
             {timeVertical.hours}
         </p>
         <p class="time">
-            {timeVertical.minutes}
+            {timeVertical.minutesLeadingZero}
         </p>
         {#if timeVertical.needsAmPm}
             <p class="time">
