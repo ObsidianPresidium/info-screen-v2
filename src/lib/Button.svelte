@@ -32,14 +32,13 @@
     }
 
     button {
-        background-color: none;
         border: none;
     }
 </style>
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    let { text, href = "#", gradient = true, isButtonElement = true } = $props();
+    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto" } = $props();
 
     let callback: string | ((event: MouseEvent) => void) = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
@@ -48,7 +47,12 @@
         // some logic
     }
 
+    
+
     onMount(() => {
+        if (zIndex !== "auto") {
+            elButton.style.zIndex = zIndex;
+        }
         if (!isButtonElement) {
             if (typeof callback === 'function') {
                 elButton.addEventListener('click', callback as EventListener);
@@ -62,6 +66,8 @@
                 elButton.addEventListener('click', (event) => {
                     window.location.href = href;
                 });
+            } else if (href === "#") {
+
             } else {
                 elButton.type = "submit";
             }
