@@ -18,17 +18,24 @@
     .panel {
         width: 100%;
         height: 10rem;
-        @include transparent-gradient-background(var(--gradient-8), 0.33, $z-index: -1);
+        @include transparent-gradient-background(var(--gradient-8), 0.33, $z-index: 0);
         display: flex;
         align-items: center;
     }
     .testelement {
-        // @include set-flex-size-and-margin(25rem, 100%, 2rem);
-        margin: 0 2rem;
         display: block;
         @include transparent-gradient-background(var(--gradient-8), 0.33);
-        width: calc(50% - 4rem);
+        width: 100%;
         height: 100%;
+        margin: 0 1rem;
+
+        &:first-child {
+            margin-left: 2rem;
+        }
+
+        &:last-child {
+            margin-right: 2rem;
+        }
     }
     .desktop-items {
         display: flex;
@@ -53,7 +60,7 @@
     import Button from "$lib/Button.svelte";
     
     let { data } = $props();
-    let foreground: HTMLDivElement
+    let foreground: HTMLDivElement;
 </script>
 
 <Background useCursors={data.useCursors} />
@@ -70,6 +77,6 @@
         </div>
     </div>
     <div class="panel">
-        <Button href="#" text="Test button" />
+        <Button href="#" text="Test button" zIndex=1 />
     </div>
 </div>
