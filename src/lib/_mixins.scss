@@ -1,5 +1,6 @@
-@mixin transparent-gradient-background($gradient, $opacity) {
+@mixin transparent-gradient-background($gradient, $opacity, $z-index: 0) {
     position: relative;
+    z-index: $z-index;
     &:before {
         content: "";
         display: block;
@@ -10,6 +11,7 @@
         left: 0;
         opacity: $opacity;
         background-image: $gradient;
+        z-index: $z-index;
     }
 }
 
