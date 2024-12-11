@@ -1,6 +1,10 @@
 <style lang="scss">
     @import "@fontsource/cantarell/700";
 
+    .button-wrap {
+        perspective: 15rem;
+        perspective-origin: center;
+    }
     .btn,
     button {
         --gradient-default: linear-gradient(135deg, rgba(46,161,255,1) 10%, rgb(116, 195, 255) 40%, rgba(0,161,255,1) 100%);
@@ -17,7 +21,6 @@
 
         &:active {
             background-position-x: 100%;
-            transform: scale(0.98);
         }
     }
     .btn {
@@ -44,25 +47,25 @@
     let elButton: HTMLAnchorElement | HTMLButtonElement;
     
     let punchyClick: EventListener = (event) => {
+        if (!usePunchyClick) {
+            elButton.style.transform = "translateZ(-0.5rem)";
+            return;
+        }
         const mouseEvent = event as MouseEvent;
         const targetSizeW = Number(getComputedStyle(elButton).width.replace("px", ""));
         const targetSizeH = Number(getComputedStyle(elButton).height.replace("px", ""));
         const x = mouseEvent.offsetX;
         const y = mouseEvent.offsetY;
 
-        console.log("Trying to punch");
-        console.log(x);
-        console.log(targetSizeW);
-        console.log(y);
-        console.log(targetSizeH);
-        if (x < targetSizeW / 2 && y < targetSizeH / 2) {
-            console.log("Punching")
-            elButton.style.rotate = "0deg 0deg -135deg";
-        }
+        elButton.style.transform = `\
+            translateZ(-0.5rem) \
+            rotateX(${((y - targetSizeH / 2) / targetSizeH * 10) * -1}deg) \
+            rotateY(${(x - targetSizeW / 2) / targetSizeW * 10}deg)\
+        `;
     };
 
     let unpunch: EventListener = () => {
-        elButton.style.rotate = "";
+        elButton.style.transform = "";
     }
 
     if (gradient === true) {
@@ -94,22 +97,20 @@
                 elButton.type = "submit";
             }
         }
-        if (usePunchyClick) {
-            elButton.addEventListener("mousedown", punchyClick);
-            elButton.addEventListener("mouseup", unpunch);
-        }
     });
 </script>
 
-<!-- svelte-ignore a11y_missing_attribute -->
-{#if isButtonElement}
-    <button bind:this={elButton}>{text}</button>
-{:else}
-    <!-- 
-        There is a problem with anchor elements showing cursors despite inheriting
-        a Svelte globally styled class with cursor: none, even though it has higher
-        specificity than default classes. Anchor elements should therefore preferably
-        not be used.
-    -->
-    <a class="btn" bind:this={elButton}>{text}</a>
-{/if}
+<!-- svelte-ignore a11y_missing_attribute, a11y_no_static_element_interactions -->
+<div class="button-wrap" onmousedown={punchyClick} onmouseup={unpunch} onmouseleave={unpunch}>
+    {#if isButtonElement}
+        <button bind:this={elButton}>{text}</button>
+    {:else}
+        <!-- 
+            There is a problem with anchor elements showing cursors despite inheriting
+            a Svelte globally styled class with cursor: none, even though it has higher
+            specificity than default classes. Anchor elements should therefore preferably
+            not be used.
+        -->
+        <a class="btn" bind:this={elButton}>{text}</a>
+    {/if}
+</div>
