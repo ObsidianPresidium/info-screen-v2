@@ -21,6 +21,7 @@
         @include transparent-gradient-background(var(--gradient-8), 0.33, $z-index: 0, $blur: 10rem);
         display: flex;
         align-items: center;
+        padding-left: 1rem;
     }
     .testelement {
         display: block;
@@ -77,6 +78,6 @@
         </div>
     </div>
     <div class="panel">
-        <Button href="#" text="Test button" zIndex=1 />
+        <Button href="#" text="Test button" zIndex=1 usePunchyClick />
     </div>
 </div>

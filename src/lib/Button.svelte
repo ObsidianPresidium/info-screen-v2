@@ -38,10 +38,32 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto" } = $props();
+    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true } = $props();
 
     let callback: string | ((event: MouseEvent) => void) = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
+    
+    let punchyClick: EventListener = (event) => {
+        const mouseEvent = event as MouseEvent;
+        const targetSizeW = Number(getComputedStyle(elButton).width.replace("px", ""));
+        const targetSizeH = Number(getComputedStyle(elButton).height.replace("px", ""));
+        const x = mouseEvent.offsetX;
+        const y = mouseEvent.offsetY;
+
+        console.log("Trying to punch");
+        console.log(x);
+        console.log(targetSizeW);
+        console.log(y);
+        console.log(targetSizeH);
+        if (x < targetSizeW / 2 && y < targetSizeH / 2) {
+            console.log("Punching")
+            elButton.style.rotate = "0deg 0deg -135deg";
+        }
+    };
+
+    let unpunch: EventListener = () => {
+        elButton.style.rotate = "";
+    }
 
     if (gradient === true) {
         // some logic
@@ -71,6 +93,10 @@
             } else {
                 elButton.type = "submit";
             }
+        }
+        if (usePunchyClick) {
+            elButton.addEventListener("mousedown", punchyClick);
+            elButton.addEventListener("mouseup", unpunch);
         }
     });
 </script>
