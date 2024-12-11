@@ -1,6 +1,10 @@
-@mixin transparent-gradient-background($gradient, $opacity, $z-index: auto) {
+@mixin transparent-gradient-background($gradient, $opacity, $z-index: auto, $blur: false) {
     position: relative;
     z-index: $z-index;
+    @if $blur {
+        backdrop-filter: blur($blur);
+    }
+    
     &:before {
         content: "";
         display: block;

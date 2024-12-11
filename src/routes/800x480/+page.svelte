@@ -18,7 +18,7 @@
     .panel {
         width: 100%;
         height: 10rem;
-        @include transparent-gradient-background(var(--gradient-8), 0.33, $z-index: 0);
+        @include transparent-gradient-background(var(--gradient-8), 0.33, $z-index: 0, $blur: 10rem);
         display: flex;
         align-items: center;
     }
