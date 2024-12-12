@@ -13,12 +13,15 @@ export const actions = {
         const formData = await request.formData();
         const size = formData.get("size");
         const useCursors = formData.get("use-cursors");
+        console.log("Form submitted");
+        console.log(useCursors);
 
         cookies.set(
             "useCursors", `${useCursors === "on"}`,
             {
                 path: '/',
-                maxAge: 60 * 60 * 24 * 365
+                maxAge: 60 * 60 * 24 * 365,
+                secure: false
             }
         );
 
