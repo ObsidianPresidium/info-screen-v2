@@ -41,9 +41,10 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
+    // TODO: Add type definitions for props
     let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true } = $props();
 
-    let callback: string | ((event: MouseEvent) => void) = href;
+    let callback: string | ((event: MouseEvent) => void) | void = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
     
     let punchyClick: EventListener = (event) => {

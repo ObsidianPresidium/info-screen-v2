@@ -7,6 +7,7 @@
         color: white;
         font-family: var(--font);
         margin: 0 2rem;
+        line-height: 1;
         &:first-child {
             margin-top: 2rem;
         }
