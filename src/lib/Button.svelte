@@ -13,6 +13,8 @@
     }
 
     .button-wrap {
+        width: max-content;
+        height: max-content;
         perspective: 15rem;
         perspective-origin: center;
     }
@@ -89,6 +91,7 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { options } from "$lib/options";
     let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true } = $props();
 
     const perspectiveFactor = 0.75;  // Increase this for a smaller FoV
@@ -96,12 +99,18 @@
     let callback: string | ((event: MouseEvent) => void) = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
     let elDiv: HTMLDivElement;
-    
+    const followCursor = $options.followCursor;
+
     let punchyClick: EventListener = (event) => {
         if (!usePunchyClick) {
             elButton.style.transform = "translateZ(-0.5rem)";
             return;
         }
+
+        if (followCursor) {
+            elDiv.onmousemove = punchyClick;
+        }
+
         const mouseEvent = event as MouseEvent;
         const targetSizeW = Number(getComputedStyle(elButton).width.replace("px", ""));
         const targetSizeH = Number(getComputedStyle(elButton).height.replace("px", ""));
@@ -117,6 +126,7 @@
 
     let unpunch: EventListener = () => {
         elButton.style.transform = "";
+        elDiv.onmousemove = null;
     }
 
     if (gradient === true) {

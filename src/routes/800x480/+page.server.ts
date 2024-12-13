@@ -1,4 +1,5 @@
 export function load({ cookies }) {
-    const useCursors = cookies.get("useCursors") === "true";
-    return { useCursors: useCursors };
+    const cookie = cookies.get("options");
+    const parsedCookie = cookie === undefined ? undefined : JSON.parse(cookie);
+    return parsedCookie;
 }

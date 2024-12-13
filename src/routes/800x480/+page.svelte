@@ -59,13 +59,16 @@
     import Background from "$lib/Background.svelte";
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
-    
-    let { data } = $props();
+    import { options } from "$lib/options";
+    import type { InfoScreenOptions } from "$lib/types";
+    const { data }: { data: InfoScreenOptions } = $props();
+
+    $options = data;
     let foreground: HTMLDivElement;
 </script>
 
-<Background useCursors={data.useCursors} />
-<div class="foreground" class:foreground--no-cursor={!data.useCursors}>
+<Background useCursors={$options.useCursors} />
+<div class="foreground" class:foreground--no-cursor={!$options.useCursors}>
     <div class="desktop">
         <Clock />
         <div class="desktop-items">

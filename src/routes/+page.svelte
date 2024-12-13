@@ -16,6 +16,12 @@
         font-size: 7rem;
         color: white;
     }
+    form > div {
+        margin-bottom: 2rem;
+    }
+    .submit {
+        margin-top: 2rem;
+    }
     .radio-div {
         display: flex;
         align-items: center;
@@ -31,10 +37,19 @@
     import Button from "$lib/Button.svelte";
     import Slider from "$lib/Slider.svelte";
     import { onMount } from "svelte";
+    import { options } from "$lib/options";
     let { userLikesCursorsBool } = $props();
-    let useCursorsCheckboxChecked = $state(userLikesCursorsBool);
+    let useCursorsCheckboxChecked = $state(false);
+    let followCursor = $state(false);
     let form : HTMLFormElement;
     let formSubmitFunction: () => void;
+    
+    if ($options.followCursor === undefined ) {
+        $options = {
+            useCursors: true,
+            followCursor: true
+        }
+    }
 
     onMount(() => {
         formSubmitFunction = () => {
@@ -54,7 +69,10 @@
                 <input type="radio" name="size" id="size-full" value="full"><label for="size-full">Full size (scale with browser viewport)</label>
             </div>
         </div>
-        <Slider text="Display cursor (enable this if not using touchscreen)" bind:checked={useCursorsCheckboxChecked} defaultChecked={userLikesCursorsBool} />
-        <Button text="Start info-screen-v2" isButtonElement />
+        <Slider text="Display cursor (enable this if not using touchscreen)" bind:checked={useCursorsCheckboxChecked} defaultChecked={false} submittedName="use-cursors" />
+        <Slider text="Punchy click follows cursor" bind:checked={followCursor} defaultChecked={false} submittedName="follow-cursor" />
+        <div class="submit">
+            <Button text="Start info-screen-v2" isButtonElement />
+        </div>
     </form>
 </main>

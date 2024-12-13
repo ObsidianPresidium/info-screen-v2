@@ -12,14 +12,19 @@ export const actions = {
     default: async ({ request, cookies }) => {
         const formData = await request.formData();
         const size = formData.get("size");
-        const useCursors = formData.get("use-cursors");
+
+        const cookie = JSON.stringify({
+            useCursors: formData.get("use-cursors") === "on",
+            followCursor: formData.get("follow-cursor") === "on"
+        });
+
 
         cookies.set(
-            "useCursors", `${useCursors === "on"}`,
+            "options", cookie,
             {
                 path: '/',
                 maxAge: 60 * 60 * 24 * 365
-            }
+            },
         );
 
         redirect(302, `/${size}/`);

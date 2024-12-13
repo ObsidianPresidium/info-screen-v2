@@ -5,6 +5,7 @@
         p {
             color: white;
             font-size: 3rem;
+            margin: 0;
         }
     }
     .switch {
@@ -57,17 +58,16 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    let { text, defaultChecked = false, checked = $bindable() } = $props();
+    let { text, defaultChecked = false, checked = $bindable(), submittedName="" } = $props();
 
-    onMount(() => {
-        checked = defaultChecked;
-    });
-
+    
+    checked = defaultChecked;
+    
 </script>
 
 <div class="slider-div">
-    <label for="use-cursors" class="switch">
-        <input type="checkbox" name="use-cursors" id="use-cursors" bind:checked={checked}>
+    <label for={submittedName} class="switch">
+        <input type="checkbox" name={submittedName} id={submittedName} bind:checked={checked}>
         <span class="slider"></span>
     </label>
     <p>{text}</p>
