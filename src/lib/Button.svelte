@@ -131,15 +131,15 @@
         }
         if (!isButtonElement) {
             if (typeof callback === 'function') {
-                elButton.addEventListener('click', callback as EventListener);
+                elDiv.addEventListener('click', callback as EventListener);
             } else {
                 (elButton as HTMLAnchorElement).href = href;
             }
         } else {
             if (typeof callback === 'function') {
-                elButton.addEventListener('click', callback as EventListener);
+                elDiv.addEventListener('click', callback as EventListener);
             } else if (href !== "#") {
-                elButton.addEventListener('click', (event) => {
+                elDiv.addEventListener('click', (event) => {
                     window.location.href = href;
                 });
             } else if (href === "#") {
@@ -155,7 +155,7 @@
 <!-- svelte-ignore a11y_missing_attribute, a11y_no_static_element_interactions -->
 <div class="button-wrap" bind:this={elDiv} onmousedown={punchyClick} onmouseup={unpunch} onmouseleave={unpunch}>
     {#if isButtonElement}
-        <button bind:this={elButton}>{text}</button>
+        <button class="btn" bind:this={elButton}>{text}</button>
     {:else}
         <!-- 
             There is a problem with anchor elements showing cursors despite inheriting
