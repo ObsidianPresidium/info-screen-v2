@@ -41,8 +41,17 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    // TODO: Add type definitions for props
-    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true } = $props();
+    
+    interface Props {
+        text: string,
+        href?: string | (() => void),
+        gradient?: boolean,
+        isButtonElement?: boolean,
+        zIndex?: string,
+        usePunchyClick?: boolean
+    }
+
+    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true }: Props = $props();
 
     let callback: string | ((event: MouseEvent) => void) | void = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
@@ -83,14 +92,14 @@
             if (typeof callback === 'function') {
                 elButton.addEventListener('click', callback as EventListener);
             } else {
-                (elButton as HTMLAnchorElement).href = href;
+                (elButton as HTMLAnchorElement).href = href as string;
             }
         } else {
             if (typeof callback === 'function') {
                 elButton.addEventListener('click', callback as EventListener);
             } else if (href !== "#") {
                 elButton.addEventListener('click', (event) => {
-                    window.location.href = href;
+                    window.location.href = href as string;
                 });
             } else if (href === "#") {
 
