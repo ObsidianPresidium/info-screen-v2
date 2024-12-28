@@ -45,43 +45,12 @@
 </style>
 
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { scale } from "svelte/transition";
-    import { elasticOut } from "svelte/easing";
+    import { desktopItems, shownDesktopItems, toggleDesktopItem } from "$lib/desktopItemLogic.svelte.ts";
     import Background from "$lib/Background.svelte";
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
-    import DesktopItem1 from "$lib/DesktopItem1.svelte";
-    import DesktopItem2 from "$lib/DesktopItem2.svelte";
-    
     let { data } = $props();
     let foreground: HTMLDivElement;
-
-    let desktopItemButton1Text = $state("Open Desktop Item 1");
-    let desktopItemButton2Text = $state("Open Desktop Item 2");
-    let desktopItem1Shown = $state(false);
-    let desktopItem2Shown = $state(false);
-
-    function toggleDesktopItem1() {
-        if (desktopItemButton1Text === "Open Desktop Item 1") {
-            desktopItemButton1Text = "Close Desktop Item 1";
-            desktopItem1Shown = true;
-        } else {
-            desktopItemButton1Text = "Open Desktop Item 1";
-            desktopItem1Shown = false;
-        }
-    }
-
-    function toggleDesktopItem2() {
-        if (desktopItemButton2Text === "Open Desktop Item 2") {
-            desktopItemButton2Text = "Close Desktop Item 2";
-            desktopItem2Shown = true;
-        } else {
-            desktopItemButton2Text = "Open Desktop Item 2";
-            desktopItem2Shown = false;
-        }
-    }
-
 </script>
 
 <Background useCursors={data.useCursors} />
@@ -89,16 +58,14 @@
     <div class="desktop">
         <Clock />
         <div class="desktop-items">
-            {#if desktopItem1Shown}
-                <DesktopItem1 />
-            {/if}
-            {#if desktopItem2Shown}
-                <DesktopItem2 />
-            {/if}
+            {#each shownDesktopItems as desktopItem}
+                <svelte:component this={desktopItem} />
+            {/each}
         </div>
     </div>
     <div class="panel">
-        <Button href={toggleDesktopItem1} text={desktopItemButton1Text} zIndex=1 usePunchyClick />
-        <Button href={toggleDesktopItem2} text={desktopItemButton2Text} zIndex=1 usePunchyClick />
+        {#each desktopItems as desktopItem, index}
+            <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} zIndex=1 usePunchyClick />
+        {/each}
     </div>
 </div>
