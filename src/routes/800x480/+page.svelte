@@ -9,6 +9,10 @@
         height: calc(100% - 10rem);
         margin: 2rem 0;
         overflow-y: hidden;
+
+        &--clock-only {
+            justify-content: center;
+        }
     }
     .foreground {
         width: 100%;
@@ -55,13 +59,17 @@
 
 <Background useCursors={data.useCursors} />
 <div class="foreground" class:foreground--no-cursor={!data.useCursors}>
-    <div class="desktop">
-        <Clock />
-        <div class="desktop-items">
-            {#each shownDesktopItems as desktopItem}
-                <svelte:component this={desktopItem} />
-            {/each}
-        </div>
+    <div class:desktop--clock-only={shownDesktopItems.length === 0} class="desktop">
+        {#if shownDesktopItems.length !== 0}
+            <Clock />
+            <div class="desktop-items">
+                {#each shownDesktopItems as desktopItem}
+                    <svelte:component this={desktopItem} />
+                {/each}
+            </div>
+        {:else}
+            <Clock style="horizontal" large />
+        {/if}
     </div>
     <div class="panel">
         {#each desktopItems as desktopItem, index}
