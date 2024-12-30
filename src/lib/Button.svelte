@@ -7,7 +7,7 @@
     }
     .btn,
     button {
-        --gradient-default: linear-gradient(135deg, rgba(46,161,255,1) 10%, rgb(116, 195, 255) 40%, rgba(0,161,255,1) 100%);
+        --gradient-default: linear-gradient(135deg, rgba(46,161,255,1) 10%, rgba(116, 195, 255,1) 40%, rgba(0,161,255,1) 100%);
         color: white;
         padding: 1rem 2rem;
         font-family: "Cantarell", sans-serif;
@@ -34,6 +34,14 @@
         }
     }
 
+    .disabled {
+        background-image: linear-gradient(135deg, rgba(98,98,98,1) 10%, rgba(150,150,150,1) 40%, rgba(23,23,23,1) 100%)
+    }
+
+    .activated {
+        background-image: linear-gradient(135deg, rgba(29,88,136,1) 10%, rgba(116,195,255,1) 40%, rgba(0,65,103,1) 100%);
+    }
+
     button {
         border: none;
     }
@@ -48,10 +56,12 @@
         gradient?: boolean,
         isButtonElement?: boolean,
         zIndex?: string,
+        disabled?: boolean,
+        activated?: boolean,
         usePunchyClick?: boolean
     }
 
-    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true }: Props = $props();
+    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", disabled = false, activated = false, usePunchyClick = true }: Props = $props();
 
     let callback: string | ((event: MouseEvent) => void) | void = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
@@ -113,7 +123,7 @@
 <!-- svelte-ignore a11y_missing_attribute, a11y_no_static_element_interactions -->
 <div class="button-wrap" onmousedown={punchyClick} onmouseup={unpunch} onmouseleave={unpunch}>
     {#if isButtonElement}
-        <button bind:this={elButton}>{text}</button>
+        <button bind:this={elButton} class:disabled class:activated>{text}</button>
     {:else}
         <!-- 
             There is a problem with anchor elements showing cursors despite inheriting
@@ -121,6 +131,6 @@
             specificity than default classes. Anchor elements should therefore preferably
             not be used.
         -->
-        <a class="btn" bind:this={elButton}>{text}</a>
+        <a class="btn" bind:this={elButton} class:disabled class:activated>{text}</a>
     {/if}
 </div>

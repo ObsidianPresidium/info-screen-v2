@@ -73,7 +73,7 @@
     </div>
     <div class="panel">
         {#each desktopItems as desktopItem, index}
-            <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} zIndex=1 usePunchyClick />
+            <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} activated={shownDesktopItems.includes(desktopItem.component)} zIndex=1 usePunchyClick />
         {/each}
     </div>
 </div>
