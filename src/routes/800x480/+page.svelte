@@ -6,8 +6,13 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        height: 100%;
+        height: calc(100% - 10rem);
         margin: 2rem 0;
+        overflow-y: hidden;
+
+        &--clock-only {
+            justify-content: center;
+        }
     }
     .foreground {
         width: 100%;
@@ -21,27 +26,16 @@
         @include transparent-gradient-background(var(--gradient-8), 0.33, $z-index: 0, $blur: 10rem);
         display: flex;
         align-items: center;
+        gap: 1rem;
         padding-left: 1rem;
     }
-    .testelement {
-        display: block;
-        @include transparent-gradient-background(var(--gradient-8), 0.33);
-        width: 100%;
-        height: 100%;
-        margin: 0 1rem;
-
-        &:first-child {
-            margin-left: 2rem;
-        }
-
-        &:last-child {
-            margin-right: 2rem;
-        }
-    }
     .desktop-items {
-        display: flex;
         height: 100%;
-        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0 1rem;
+        box-sizing: border-box;
     }
 
     .foreground--no-cursor :global {
@@ -55,7 +49,7 @@
 </style>
 
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { desktopItems, shownDesktopItems, toggleDesktopItem } from "$lib/desktopItemLogic.svelte.ts";
     import Background from "$lib/Background.svelte";
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
@@ -69,18 +63,21 @@
 
 <Background useCursors={$options.useCursors} />
 <div class="foreground" class:foreground--no-cursor={!$options.useCursors}>
-    <div class="desktop">
-        <Clock />
-        <div class="desktop-items">
-            <div class="testelement">
-
+    <div class:desktop--clock-only={shownDesktopItems.length === 0} class="desktop">
+        {#if shownDesktopItems.length !== 0}
+            <Clock />
+            <div class="desktop-items">
+                {#each shownDesktopItems as desktopItem}
+                    <svelte:component this={desktopItem} />
+                {/each}
             </div>
-            <div class="testelement">
-
-            </div>
-        </div>
+        {:else}
+            <Clock style="horizontal" large />
+        {/if}
     </div>
     <div class="panel">
-        <Button href="#" text="Test button" zIndex=1 usePunchyClick />
+        {#each desktopItems as desktopItem, index}
+            <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} activated={shownDesktopItems.includes(desktopItem.component)} zIndex=1 usePunchyClick />
+        {/each}
     </div>
 </div>

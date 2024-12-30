@@ -75,6 +75,14 @@
             border-radius: 2rem;
         }
     }
+
+    .disabled {
+        background-image: linear-gradient(135deg, rgba(98,98,98,1) 10%, rgba(150,150,150,1) 40%, rgba(23,23,23,1) 100%)
+    }
+
+    .activated {
+        background-image: linear-gradient(135deg, rgba(29,88,136,1) 10%, rgba(116,195,255,1) 40%, rgba(0,65,103,1) 100%);
+    }
     button.btn {
         border: none;
     }
@@ -92,11 +100,23 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { options } from "$lib/options";
-    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", usePunchyClick = true } = $props();
+    
+    interface Props {
+        text: string,
+        href?: string | (() => void),
+        gradient?: boolean,
+        isButtonElement?: boolean,
+        zIndex?: string,
+        disabled?: boolean,
+        activated?: boolean,
+        usePunchyClick?: boolean
+    }
+
+    let { text, href = "#", gradient = true, isButtonElement = true, zIndex = "auto", disabled = false, activated = false, usePunchyClick = true }: Props = $props();
 
     const perspectiveFactor = 0.75;  // Increase this for a smaller FoV
 
-    let callback: string | ((event: MouseEvent) => void) = href;
+    let callback: string | ((event: MouseEvent) => void) | void = href;
     let elButton: HTMLAnchorElement | HTMLButtonElement;
     let elDiv: HTMLDivElement;
     const followCursor = $options.followCursor;
@@ -143,14 +163,14 @@
             if (typeof callback === 'function') {
                 elDiv.addEventListener('click', callback as EventListener);
             } else {
-                (elButton as HTMLAnchorElement).href = href;
+                (elButton as HTMLAnchorElement).href = href as string;
             }
         } else {
             if (typeof callback === 'function') {
                 elDiv.addEventListener('click', callback as EventListener);
             } else if (href !== "#") {
                 elDiv.addEventListener('click', (event) => {
-                    window.location.href = href;
+                    window.location.href = href as string;
                 });
             } else if (href === "#") {
 
@@ -165,7 +185,7 @@
 <!-- svelte-ignore a11y_missing_attribute, a11y_no_static_element_interactions -->
 <div class="button-wrap" bind:this={elDiv} onmousedown={punchyClick} onmouseup={unpunch} onmouseleave={unpunch}>
     {#if isButtonElement}
-        <button class="btn" bind:this={elButton}>{text}</button>
+        <button class="btn" bind:this={elButton} class:disabled class:activated>{text}</button>
     {:else}
         <!-- 
             There is a problem with anchor elements showing cursors despite inheriting
@@ -173,6 +193,6 @@
             specificity than default classes. Anchor elements should therefore preferably
             not be used.
         -->
-        <a class="btn" bind:this={elButton}>{text}</a>
+        <a class="btn" bind:this={elButton} class:disabled class:activated>{text}</a>
     {/if}
 </div>

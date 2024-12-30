@@ -5,7 +5,7 @@
         backdrop-filter: blur($blur);
     }
     
-    &:before {
+    &::before {
         content: "";
         display: block;
         position: absolute;

@@ -7,6 +7,7 @@
         color: white;
         font-family: var(--font);
         margin: 0 2rem;
+        line-height: 1;
         &:first-child {
             margin-top: 2rem;
         }
@@ -23,6 +24,10 @@
         min-width: 10rem * 2;
     }
 
+    .large {
+        font-size: 25rem;
+    }
+
     .debug {
         background-color: #8888;
         box-shadow: inset 0px 0px 0px 10px orangered;
@@ -31,7 +36,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    let { debug = false, style = "vertical", font = "Inter", forceAmPm = false } = $props();
+    let { debug = false, style = "vertical", large = false, font = "Inter", forceAmPm = false } = $props();
     
     function timeString() {
         return new Date().toLocaleTimeString([], { timeStyle: "short" });
@@ -100,7 +105,7 @@
     </div>
 {:else}
     <div class:debug={debug} class="container">
-        <p style="--font: {font}" class="time">
+        <p style="--font: {font}" class="time" class:large>
             {timeHorizontal}
         </p>
     </div>

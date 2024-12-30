@@ -23,7 +23,8 @@ export const actions = {
             "options", cookie,
             {
                 path: '/',
-                maxAge: 60 * 60 * 24 * 365
+                maxAge: 60 * 60 * 24 * 365,
+                secure: false
             },
         );
 
