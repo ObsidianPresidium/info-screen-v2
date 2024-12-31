@@ -36,7 +36,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    let { debug = false, style = "vertical", large = false, font = "Inter", forceAmPm = false } = $props();
+    let { debug = false, style = "vertical", large = false, scale = false, font = "Inter", forceAmPm = false } = $props();
     
     function timeString() {
         return new Date().toLocaleTimeString([], { timeStyle: "short" });
@@ -60,10 +60,9 @@
 
     let timeHorizontal = $state(timeString());
     let timeVertical = $state(timeObj());
+    let orientation = $state("landscape");
 
     onMount(() => {
-        
-
         function timeObj() {
             let date = new Date();
             let hours = date.getHours();
@@ -79,8 +78,17 @@
                 needsAmPm,
                 isPm
             }
-        }
+        };
         
+        function updateOrientation() {
+            orientation = window.innerWidth > window.innerHeight ? "landscape" : "portrait";
+        };
+        updateOrientation();
+        
+        window.addEventListener("resize", () => {
+            updateOrientation();
+        });
+
         setInterval(() => {
             timeHorizontal = timeString();
             timeVertical = timeObj();
@@ -89,7 +97,7 @@
     
 </script>
 
-{#if style === "vertical"}
+{#if style === "vertical" || orientation === "portrait"}
     <div class:debug class="container">
         <p class="time">
             {timeVertical.hours}
