@@ -49,7 +49,7 @@
     import TextField from "$lib/TextField.svelte";
     import { onMount } from "svelte";
     import { options } from "$lib/options";
-    let { userLikesCursorsBool } = $props();
+    let { owmKey } = $props();
     let useCursorsCheckboxChecked = $state(false);
     let followCursor = $state(false);
     let refreshCredentials = $state(false);
@@ -94,7 +94,7 @@
         <TextField submittedName="owm-city" title="City" value="Copenhagen" />
         <Slider text="Use imperial units" defaultChecked={false} submittedName="owm-units" />
         <TextField submittedName="owm-update-interval" title="Update interval (in minutes):" value="30" />
-        <TextField submittedName="owm-key" title="API key:" />
+        <TextField submittedName="owm-key" title="API key:" value={owmKey} />
         <div class="submit">
             <Button text="Start info-screen-v2" isButtonElement />
         </div>

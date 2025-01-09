@@ -3,10 +3,14 @@ import fs from "node:fs";
 import type { Actions } from "./$types";
 
 export function load({ cookies }) {
-    const userLikesCursors = cookies.get("useCursors");
-    const userLikesCursorsBool = userLikesCursors === "true";
+    const cookie = cookies.get("options");
+    if (cookie === undefined) return { owmKey: "" };
 
-    return { userLikesCursorsBool };
+    const cookiedOptions = JSON.parse(cookie);
+
+    let owmKey = cookiedOptions.credentials.owmKey;
+
+    return { owmKey };
 }
 
 export const actions = {
