@@ -46,6 +46,7 @@
 <script lang="ts">
     import Button from "$lib/Button.svelte";
     import Slider from "$lib/Slider.svelte";
+    import TextField from "$lib/TextField.svelte";
     import { onMount } from "svelte";
     import { options } from "$lib/options";
     let { userLikesCursorsBool } = $props();
@@ -90,10 +91,10 @@
         <input type="text" name="test-credentials" placeholder="Test credentials" />
         <hr>
         <h2>OpenWeatherMap settings</h2>
-        <input type="text" name="owm-city" id="owm-city" placeholder="City" />
+        <TextField submittedName="owm-city" title="City" value="Copenhagen" />
         <Slider text="Use imperial units" defaultChecked={false} submittedName="owm-units" />
-        <input type="text" name="owm-update-interval" id="owm-update-interval" placeholder="Update interval (in minutes)" />
-        <input type="text" name="owm-key" id="owm-key" placeholder="API key" />
+        <TextField submittedName="owm-update-interval" title="Update interval (in minutes):" value="30" />
+        <TextField submittedName="owm-key" title="API key:" />
         <div class="submit">
             <Button text="Start info-screen-v2" isButtonElement />
         </div>
