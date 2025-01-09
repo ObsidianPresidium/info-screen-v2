@@ -16,6 +16,11 @@
         font-size: 7rem;
         color: white;
     }
+    h2 {
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+    }
     form > div {
         margin-bottom: 2rem;
     }
@@ -31,6 +36,11 @@
             margin-left: 1rem;
         }
     }
+    input[type="text"] {
+        display: block;
+        font-size: 2rem;
+        margin: 1rem 0;
+    }
 </style>
 
 <script lang="ts">
@@ -41,13 +51,18 @@
     let { userLikesCursorsBool } = $props();
     let useCursorsCheckboxChecked = $state(false);
     let followCursor = $state(false);
+    let refreshCredentials = $state(false);
     let form : HTMLFormElement;
     let formSubmitFunction: () => void;
     
     if ($options.followCursor === undefined ) {
         $options = {
             useCursors: true,
-            followCursor: true
+            followCursor: true,
+            credentials: {
+                testCredentials: "",
+                owmKey: ""
+            }
         }
     }
 
@@ -71,6 +86,14 @@
         </div>
         <Slider text="Display cursor (enable this if not using touchscreen)" bind:checked={useCursorsCheckboxChecked} defaultChecked={false} submittedName="use-cursors" />
         <Slider text="Punchy click follows cursor" bind:checked={followCursor} defaultChecked={false} submittedName="follow-cursor" />
+        <Slider text="Refresh credentials" bind:checked={refreshCredentials} defaultChecked={false} submittedName="refresh-credentials" />
+        <input type="text" name="test-credentials" placeholder="Test credentials" />
+        <hr>
+        <h2>OpenWeatherMap settings</h2>
+        <input type="text" name="owm-city" id="owm-city" placeholder="City" />
+        <Slider text="Use imperial units" defaultChecked={false} submittedName="owm-units" />
+        <input type="text" name="owm-update-interval" id="owm-update-interval" placeholder="Update interval (in minutes)" />
+        <input type="text" name="owm-key" id="owm-key" placeholder="API key" />
         <div class="submit">
             <Button text="Start info-screen-v2" isButtonElement />
         </div>
