@@ -33,3 +33,4 @@ vite.config.ts.timestamp-*
 # Info-screen specific
 RUNNING
 runtime-data/
+static/wallpapers/

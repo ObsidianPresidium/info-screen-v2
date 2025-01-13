@@ -12,3 +12,12 @@ export type InfoScreenOptions = {
     owmUpdateInterval: number;
     credentials: Credentials;
 };
+
+export type Wallpapers = {
+    wallpapers: string[];
+};
+
+export type CookieProps = {
+    optionsCookie: InfoScreenOptions;
+    wallpapersCookie: Wallpapers;
+};

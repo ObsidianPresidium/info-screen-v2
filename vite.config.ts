@@ -7,7 +7,8 @@ export default defineConfig({
 		fs: {
 			allow: [
 				searchForWorkspaceRoot(process.cwd()),
-				"/static/dryrun-data/*"
+				"/static/dryrun-data/*",
+				"/static/wallpapers/*"
 			]
 		}
 	},

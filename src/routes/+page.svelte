@@ -56,7 +56,7 @@
     let form : HTMLFormElement;
     let formSubmitFunction: () => void;
     
-    if ($options.followCursor === undefined ) {
+    if ($options.followCursor === undefined) {
         $options = {
             useCursors: true,
             followCursor: true,

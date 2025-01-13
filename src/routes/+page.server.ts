@@ -40,7 +40,7 @@ export const actions = {
             }
         }
         
-        const cookie = JSON.stringify({
+        const optionsCookie = JSON.stringify({
             useCursors: formData.get("use-cursors") === "on",
             followCursor: formData.get("follow-cursor") === "on",
             owmCity: formData.get("owm-city"),
@@ -50,13 +50,29 @@ export const actions = {
             credentials: credentials
         });
 
+        let wallpaperCookie;
+        try {
+            wallpaperCookie = JSON.stringify({wallpapers: fs.readdirSync("static/wallpapers")});
+        } catch {
+            wallpaperCookie = JSON.stringify({wallpapers: []});
+        }
+
         cookies.set(
-            "options", cookie,
+            "options", optionsCookie,
             {
                 path: '/',
                 maxAge: 60 * 60 * 24 * 365,
                 secure: false
             },
+        );
+
+        cookies.set(
+            "wallpapers", wallpaperCookie,
+            {
+                path: "/",
+                maxAge: 60 * 60 * 24,
+                secure: false
+            }
         );
 
         redirect(302, `/${size}/`);
