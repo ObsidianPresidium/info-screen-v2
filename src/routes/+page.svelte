@@ -60,6 +60,9 @@
         $options = {
             useCursors: true,
             followCursor: true,
+            owmCity: "Copenhagen",
+            owmUnits: false,
+            owmUpdateInterval: 30,
             credentials: {
                 testCredentials: "",
                 owmKey: ""

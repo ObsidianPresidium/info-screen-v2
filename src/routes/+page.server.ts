@@ -43,6 +43,9 @@ export const actions = {
         const cookie = JSON.stringify({
             useCursors: formData.get("use-cursors") === "on",
             followCursor: formData.get("follow-cursor") === "on",
+            owmCity: formData.get("owm-city"),
+            owmUpdateInterval: formData.get("owm-update-interval"),
+            owmUnits: formData.get("owm-units"),
             credentials: credentials
         });
 

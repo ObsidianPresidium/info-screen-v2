@@ -1,5 +1,5 @@
 import type { Component } from "svelte";
-import DesktopItem1 from "./DesktopItem1.svelte";
+import Weather from "./Weather.svelte";
 import DesktopItem2 from "./DesktopItem2.svelte";
 
 type TDesktopItem = {
@@ -8,7 +8,7 @@ type TDesktopItem = {
 };
 
 export const desktopItems: TDesktopItem[] = [
-    {component: DesktopItem1, name: "Desktop Item 1"},
+    {component: Weather, name: "Weather"},
     {component: DesktopItem2, name: "Desktop Item 2"},
 ];
 
