@@ -24,13 +24,14 @@
 <script lang="ts">
     import DesktopItemGeneric from "$lib/DesktopItemGeneric.svelte";
     import { options } from "$lib/options";
+    import { api } from "$lib/api.svelte.ts";
     import { onMount } from "svelte";
 
     let temp = $state(0);
     let weatherDescription = $state("");
 
     async function getWeather() {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${$options.owmCity}&appid=${$options.credentials.owmKey}&units=${$options.owmUnits ? "imperial" : "metric"}`);
+        const response = await $api.fetch.weather($options.credentials.owmKey, $options.owmCity, $options.owmUnits);
         const data = await response.json();
         temp = data.main.temp;
         weatherDescription = data.weather[0].description;

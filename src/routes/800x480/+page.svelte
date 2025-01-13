@@ -54,10 +54,13 @@
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
     import { options } from "$lib/options";
+    import { api } from "$lib/api.svelte.ts";
     import type { InfoScreenOptions } from "$lib/types";
     const { data }: { data: InfoScreenOptions } = $props();
 
     $options = data;
+
+    $api.setDryRunMode($options.dryRunMode);
     let foreground: HTMLDivElement;
 </script>
 

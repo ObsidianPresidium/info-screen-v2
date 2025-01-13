@@ -60,6 +60,7 @@
         $options = {
             useCursors: true,
             followCursor: true,
+            dryRunMode: true,
             owmCity: "Copenhagen",
             owmUnits: false,
             owmUpdateInterval: 30,
@@ -91,6 +92,7 @@
         <Slider text="Display cursor (enable this if not using touchscreen)" bind:checked={useCursorsCheckboxChecked} defaultChecked={false} submittedName="use-cursors" />
         <Slider text="Punchy click follows cursor" bind:checked={followCursor} defaultChecked={false} submittedName="follow-cursor" />
         <Slider text="Refresh credentials" bind:checked={refreshCredentials} defaultChecked={false} submittedName="refresh-credentials" />
+        <Slider text="Use cached/fake endpoints (dry-run mode)" defaultChecked submittedName="dry-run" />
         <input type="text" name="test-credentials" placeholder="Test credentials" />
         <hr>
         <h2>OpenWeatherMap settings</h2>

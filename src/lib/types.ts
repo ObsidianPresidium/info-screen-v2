@@ -6,6 +6,7 @@ type Credentials = {
 export type InfoScreenOptions = {
     useCursors: boolean;
     followCursor: boolean;
+    dryRunMode: boolean;
     owmUnits: boolean;
     owmCity: string;
     owmUpdateInterval: number;

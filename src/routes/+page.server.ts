@@ -46,6 +46,7 @@ export const actions = {
             owmCity: formData.get("owm-city"),
             owmUpdateInterval: formData.get("owm-update-interval"),
             owmUnits: formData.get("owm-units"),
+            dryRunMode: formData.get("dry-run") === "on",
             credentials: credentials
         });
 
