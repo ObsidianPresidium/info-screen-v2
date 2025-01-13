@@ -26,6 +26,9 @@
 
     .large {
         font-size: 25rem;
+        &--needs-am-pm {
+            font-size: 15rem;
+        }
     }
 
     .debug {
@@ -38,8 +41,15 @@
     import { onMount } from "svelte";
     let { debug = false, style = "vertical", large = false, scale = false, font = "Inter", forceAmPm = false } = $props();
     
+    let usesAmPm = $state(false);
+    let timeHorizontal = $state(timeString());
+    let timeVertical = $state(timeObj());
+    let orientation = $state("landscape");
+
     function timeString() {
-        return new Date().toLocaleTimeString([], { timeStyle: "short" });
+        const date = new Date().toLocaleTimeString([], { timeStyle: "short" });
+        usesAmPm = date.includes("AM") || date.includes("PM");
+        return date;
     }
 
     function timeObj() {
@@ -57,10 +67,6 @@
             isPm
         }
     }
-
-    let timeHorizontal = $state(timeString());
-    let timeVertical = $state(timeObj());
-    let orientation = $state("landscape");
 
     onMount(() => {
         function timeObj() {
@@ -113,7 +119,7 @@
     </div>
 {:else}
     <div class:debug={debug} class="container">
-        <p style="--font: {font}" class="time" class:large>
+        <p style="--font: {font}; {usesAmPm ? 'font-size: 15rem' : ''}" class="time" class:large>
             {timeHorizontal}
         </p>
     </div>
