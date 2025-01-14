@@ -15,3 +15,6 @@ export const options: Writable<InfoScreenOptions> = writable<InfoScreenOptions>(
 });
 
 export const wallpapers: Writable<Wallpapers> = writable<Wallpapers>({wallpapers: []});
+
+// The value of this does not matter. When it flips, a wallpaper change is requested automatically via subscription.
+export const wallpaperChangeRequested: Writable<boolean> = writable<boolean>(false);

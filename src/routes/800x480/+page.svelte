@@ -54,7 +54,7 @@
     import Background from "$lib/Background.svelte";
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
-    import { options, wallpapers } from "$lib/options";
+    import { options, wallpapers, wallpaperChangeRequested } from "$lib/options";
     import { api } from "$lib/api.svelte.ts";
     import type { CookieProps } from "$lib/types";
     const { data }: { data: CookieProps } = $props();
@@ -84,5 +84,6 @@
         {#each desktopItems as desktopItem, index}
             <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} activated={$shownDesktopItems.includes(desktopItem.component)} zIndex=1 usePunchyClick />
         {/each}
+        <Button href={() => $wallpaperChangeRequested = !$wallpaperChangeRequested} text="Change wp" zIndex=1 usePunchyClick />
     </div>
 </div>
