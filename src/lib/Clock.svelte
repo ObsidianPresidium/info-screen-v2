@@ -40,47 +40,56 @@
 <script lang="ts">
     import { onMount } from "svelte";
     let { debug = false, style = "vertical", large = false, scale = false, font = "Inter", forceAmPm = false } = $props();
-    
-    let usesAmPm = $state(false);
     let timeHorizontal = $state(timeString());
     let timeVertical = $state(timeObj());
     let orientation = $state("landscape");
+    let is12HourLocale = $state(false);
 
     function timeString() {
-        const date = new Date().toLocaleTimeString([], { timeStyle: "short" });
-        usesAmPm = date.includes("AM") || date.includes("PM");
-        return date;
+        return new Date().toLocaleTimeString([], { timeStyle: "short" });
+    }
+
+    function get12HourLocale() {
+        try {
+            const sample = timeString();
+            return sample.includes("AM") || sample.includes("PM");
+        } catch {
+            return false;
+        }
     }
 
     function timeObj() {
         let date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let minutesLeadingZero = minutes < 10 ? "0" + minutes.toString() : minutes.toString();
+        let resTimeString = timeString();
+        let timeArray = resTimeString.split(/[:\. ]/);
+        let localeHours = timeArray[0];
+        let localeMinutes = timeArray[1];
         let needsAmPm = false || forceAmPm;
         let isPm = date.getHours() > 12;
 
         return {
-            hours,
-            minutesLeadingZero,
+            localeHours,
+            localeMinutes,
             needsAmPm,
             isPm
         }
     }
 
     onMount(() => {
+        is12HourLocale = get12HourLocale();
+
         function timeObj() {
             let date = new Date();
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let minutesLeadingZero = minutes < 10 ? "0" + minutes.toString() : minutes.toString();
-            let hourCycle = new Intl.Locale(window.navigator.language).hourCycle;
-            let needsAmPm = hourCycle === "h11" || hourCycle === "h12" || forceAmPm;
+            let resTimeString = timeString();
+            let timeArray = resTimeString.split(/[:\. ]/);
+            let localeHours = timeArray[0];
+            let localeMinutes = timeArray[1];
+            let needsAmPm = is12HourLocale || forceAmPm;
             let isPm = date.getHours() > 12;
 
             return {
-                hours,
-                minutesLeadingZero,
+                localeHours,
+                localeMinutes,
                 needsAmPm,
                 isPm
             }
@@ -106,12 +115,12 @@
 {#if style === "vertical" || orientation === "portrait"}
     <div class:debug class="container">
         <p class="time">
-            {timeVertical.hours}
+            {timeVertical.localeHours}
         </p>
         <p class="time">
-            {timeVertical.minutesLeadingZero}
+            {timeVertical.localeMinutes}
         </p>
-        {#if timeVertical.needsAmPm}
+        {#if is12HourLocale}
             <p class="time">
                 {(timeVertical.isPm) ? "PM" : "AM"}
             </p>
@@ -119,7 +128,7 @@
     </div>
 {:else}
     <div class:debug={debug} class="container">
-        <p style="--font: {font}; {usesAmPm ? 'font-size: 15rem' : ''}" class="time" class:large>
+        <p style="--font: {font}; {is12HourLocale ? 'font-size: 15rem' : ''}" class="time" class:large>
             {timeHorizontal}
         </p>
     </div>
