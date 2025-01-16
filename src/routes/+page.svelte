@@ -1,14 +1,9 @@
 <style lang="scss">
     main {
-        position: fixed;
-        top: 0;
-        left: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        width: 100vw;
         margin: 0;
         font-family: var(--font-system-ui);
     }

@@ -11,12 +11,12 @@
 </style>
 
 <script lang="ts">
-    let { title, titleStyles = "", styles = "", submittedName, value = $bindable() } = $props();
+    let { title, titleStyles = "", styles = "", submittedName, value = $bindable(), password = false } = $props();
 
 
 </script>
 {#if title}
-    <p style={titleStyles}>{title} <input type="text" style={styles} name="{submittedName}" id="input" bind:value={value}></p>
+    <p style={titleStyles}>{title} <input type="{(password) ? 'password' : 'text'}" style={styles} name="{submittedName}" id="input" bind:value={value}></p>
 {:else}
-    <input type="text" style={styles} name="{submittedName}" id="input" bind:value={value}>
+    <input type="{(password) ? 'password' : 'text'}" style={styles} name="{submittedName}" id="input" bind:value={value}>
 {/if}
