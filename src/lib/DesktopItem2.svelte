@@ -23,11 +23,15 @@
 
 <script lang="ts">
     import DesktopItemGeneric from "$lib/DesktopItemGeneric.svelte";
+    import { options } from "$lib/options";
+
+    let credentials = $options.credentials.testCredentials;
 </script>
 
 <DesktopItemGeneric>
     <div class="content">
         <h1>Desktop Item 2</h1>
         <p>This is the second desktop item. This can also be shown, or hidden, via its button from the panel below.</p>
+        <p>Credentials: {credentials}</p>
     </div>
 </DesktopItemGeneric>

@@ -1,5 +1,6 @@
 import type { Component } from "svelte";
-import DesktopItem1 from "./DesktopItem1.svelte";
+import { writable, get } from "svelte/store";
+import Weather from "./Weather.svelte";
 import DesktopItem2 from "./DesktopItem2.svelte";
 
 type TDesktopItem = {
@@ -8,17 +9,21 @@ type TDesktopItem = {
 };
 
 export const desktopItems: TDesktopItem[] = [
-    {component: DesktopItem1, name: "Desktop Item 1"},
+    {component: Weather, name: "Weather"},
     {component: DesktopItem2, name: "Desktop Item 2"},
 ];
 
-export const shownDesktopItems = $state<Component[]>([]);
+export const shownDesktopItems = writable(<Component[]>[]);
 
 export function toggleDesktopItem(index: number) {
     const item = desktopItems[index];
-    if (shownDesktopItems.includes(item.component)) {
-        shownDesktopItems.splice(shownDesktopItems.indexOf(item.component), 1);
+    if (get(shownDesktopItems).includes(item.component)) {
+        shownDesktopItems.update((store) => { 
+            return store.toSpliced(store.indexOf(item.component), 1);
+        })
     } else {
-        shownDesktopItems.push(item.component);
+        shownDesktopItems.update((store) => {
+            return store.concat([item.component]);
+        });
     }
 };

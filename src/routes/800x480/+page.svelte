@@ -31,6 +31,7 @@
     }
     .desktop-items {
         height: 100%;
+        width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
         gap: 1rem;
@@ -53,21 +54,25 @@
     import Background from "$lib/Background.svelte";
     import Clock from "$lib/Clock.svelte";
     import Button from "$lib/Button.svelte";
-    import { options } from "$lib/options";
-    import type { InfoScreenOptions } from "$lib/types";
-    const { data }: { data: InfoScreenOptions } = $props();
+    import { options, wallpapers, wallpaperChangeRequested } from "$lib/options";
+    import { api } from "$lib/api.svelte.ts";
+    import type { CookieProps } from "$lib/types";
+    const { data }: { data: CookieProps } = $props();
+    $options = data.optionsCookie;
+    $wallpapers = data.wallpapersCookie;
 
-    $options = data;
+    $api.setDryRunMode($options.dryRunMode);
+    
     let foreground: HTMLDivElement;
 </script>
 
 <Background useCursors={$options.useCursors} />
 <div class="foreground" class:foreground--no-cursor={!$options.useCursors}>
-    <div class:desktop--clock-only={shownDesktopItems.length === 0} class="desktop">
-        {#if shownDesktopItems.length !== 0}
+    <div class:desktop--clock-only={$shownDesktopItems.length === 0} class="desktop">
+        {#if $shownDesktopItems.length !== 0}
             <Clock />
             <div class="desktop-items">
-                {#each shownDesktopItems as desktopItem}
+                {#each $shownDesktopItems as desktopItem}
                     <svelte:component this={desktopItem} />
                 {/each}
             </div>
@@ -77,7 +82,8 @@
     </div>
     <div class="panel">
         {#each desktopItems as desktopItem, index}
-            <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} activated={shownDesktopItems.includes(desktopItem.component)} zIndex=1 usePunchyClick />
+            <Button href={() => toggleDesktopItem(index)} text={desktopItem.name} activated={$shownDesktopItems.includes(desktopItem.component)} zIndex=1 usePunchyClick />
         {/each}
+        <Button href={() => $wallpaperChangeRequested = !$wallpaperChangeRequested} text="Change wp" zIndex=1 usePunchyClick />
     </div>
 </div>

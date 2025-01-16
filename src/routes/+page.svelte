@@ -16,6 +16,11 @@
         font-size: 7rem;
         color: white;
     }
+    h2 {
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+    }
     form > div {
         margin-bottom: 2rem;
     }
@@ -31,23 +36,38 @@
             margin-left: 1rem;
         }
     }
+    input[type="text"] {
+        display: block;
+        font-size: 2rem;
+        margin: 1rem 0;
+    }
 </style>
 
 <script lang="ts">
     import Button from "$lib/Button.svelte";
     import Slider from "$lib/Slider.svelte";
+    import TextField from "$lib/TextField.svelte";
     import { onMount } from "svelte";
     import { options } from "$lib/options";
-    let { userLikesCursorsBool } = $props();
+    let { owmKey } = $props();
     let useCursorsCheckboxChecked = $state(false);
     let followCursor = $state(false);
+    let refreshCredentials = $state(false);
     let form : HTMLFormElement;
     let formSubmitFunction: () => void;
     
-    if ($options.followCursor === undefined ) {
+    if ($options.followCursor === undefined) {
         $options = {
             useCursors: true,
-            followCursor: true
+            followCursor: true,
+            dryRunMode: true,
+            owmCity: "Copenhagen",
+            owmUnits: false,
+            owmUpdateInterval: 30,
+            credentials: {
+                testCredentials: "",
+                owmKey: ""
+            }
         }
     }
 
@@ -71,6 +91,15 @@
         </div>
         <Slider text="Display cursor (enable this if not using touchscreen)" bind:checked={useCursorsCheckboxChecked} defaultChecked={false} submittedName="use-cursors" />
         <Slider text="Punchy click follows cursor" bind:checked={followCursor} defaultChecked={false} submittedName="follow-cursor" />
+        <Slider text="Refresh credentials" bind:checked={refreshCredentials} defaultChecked={false} submittedName="refresh-credentials" />
+        <Slider text="Use cached/fake endpoints (dry-run mode)" defaultChecked submittedName="dry-run" />
+        <input type="text" name="test-credentials" placeholder="Test credentials" />
+        <hr>
+        <h2>OpenWeatherMap settings</h2>
+        <TextField submittedName="owm-city" title="City" value="Copenhagen" />
+        <Slider text="Use imperial units" defaultChecked={false} submittedName="owm-units" />
+        <TextField submittedName="owm-update-interval" title="Update interval (in minutes):" value="30" />
+        <TextField submittedName="owm-key" title="API key:" value={owmKey} />
         <div class="submit">
             <Button text="Start info-screen-v2" isButtonElement />
         </div>
